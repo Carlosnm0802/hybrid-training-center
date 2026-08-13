@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alta de Alumno - HTC</title>
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="icon" href="data:,">
+</head>
+<body>
+    <header class="header">
+        <div class="nav-logo">
+            <img src="assets/img/logo.jpg" alt="HTC Logo">
+        </div>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger">&#9776;</label>
+        <nav class="nav-links">
+            <a href="dashboard.html">Dashboard</a>
+            <a href="alumnos.html">Alumnos</a>
+            <a href="alta-alumno.html" style="font-weight: bold; border-bottom: 2px solid var(--accent-color);">Alta de Alumno</a>
+            <a href="checkin.html">Check-in</a>
+            <a href="#" id="logoutBtn" style="color: var(--accent-color); font-weight: bold;">Cerrar Sesión</a>
+        </nav>
+    </header>
+    <main>
+        <section class="card mb-4" style="max-width: 800px; margin: 0 auto;">
+            <h2 class="mb-2 text-accent">Nuevo Alumno</h2>
+            <form id="formAltaAlumno">
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="nombre">Nombre Completo *</label>
+                        <input type="text" id="nombre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="telefono">Teléfono *</label>
+                        <input type="text" id="telefono" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="modalidad">Modalidad *</label>
+                        <select id="modalidad" required>
+                            <option value="" disabled selected>Selecciona una...</option>
+                            <option value="hibrido">Híbrido</option>
+                            <option value="boxeo">Boxeo</option>
+                            <option value="combo">Combo</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="condicion">Condición Médica</label>
+                        <input type="text" id="condicion" placeholder="Ej. Asma, Lesión en rodilla (o deja vacío)">
+                    </div>
+                    <div class="form-group">
+                        <label for="contacto_emergencia">Contacto de Emergencia (Nombre)</label>
+                        <input type="text" id="contacto_emergencia">
+                    </div>
+                    <div class="form-group">
+                        <label for="contacto_telefono">Teléfono de Emergencia</label>
+                        <input type="text" id="contacto_telefono">
+                    </div>
+                </div>
+                
+                <div id="altaMsg" style="display:none; font-weight: bold;" class="mb-2 mt-2"></div>
+                <button type="submit" class="btn mt-2" id="btnAlta">Registrar Alumno</button>
+            </form>
+        </section>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabaseClient.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/alumnos.js"></script>
+</body>
+</html>

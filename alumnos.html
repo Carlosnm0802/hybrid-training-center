@@ -7,17 +7,106 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Alumnos</h1>
-        <nav>
+    <header class="header">
+        <div class="nav-logo">
+            <img src="assets/img/logo.jpg" alt="HTC Logo">
+        </div>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger">&#9776;</label>
+        <nav class="nav-links">
             <a href="dashboard.html">Dashboard</a>
+            <a href="alumnos.html" style="font-weight: bold; border-bottom: 2px solid var(--accent-color);">Alumnos</a>
+            <a href="alta-alumno.html">Alta de Alumno</a>
             <a href="checkin.html">Check-in</a>
             <a href="#" id="logoutBtn" style="color: var(--accent-color); font-weight: bold;">Cerrar Sesión</a>
         </nav>
     </header>
     <main>
-        <!-- Formulario y lista en paso 4 y 6 -->
+        <!-- Lista de Alumnos (Paso 6B con Filtros) -->
+        <section class="card">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; flex-wrap: wrap; gap: 1rem;">
+                <h2 class="text-accent" style="margin: 0;">Directorio de Alumnos</h2>
+                <div style="display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap; width: 100%; max-width: 700px; justify-content: flex-end;">
+                    <div class="form-group" style="margin: 0; flex: 1; min-width: 150px;">
+                        <input type="text" id="filtroTexto" placeholder="Buscar por nombre..." style="padding: 0.4rem; font-size: 0.9rem; width: 100%;">
+                    </div>
+                    <div class="form-group" style="margin: 0; min-width: 130px;">
+                        <select id="filtroModalidad" style="padding: 0.4rem; font-size: 0.9rem; width: 100%;">
+                            <option value="todos">Todas</option>
+                            <option value="boxeo">Boxeo</option>
+                            <option value="hibrido">Híbrido</option>
+                            <option value="combo">Combo</option>
+                        </select>
+                    </div>
+                    <div class="form-group" style="margin: 0; min-width: 130px;">
+                        <select id="filtroEstado" style="padding: 0.4rem; font-size: 0.9rem; width: 100%;">
+                            <option value="todos">Todos</option>
+                            <option value="activo">Activos</option>
+                            <option value="vencido">Vencidos</option>
+                            <option value="sin-plan">Sin plan</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="data-table" id="tablaAlumnos">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Modalidad</th>
+                            <th>Plan Actual</th>
+                            <th>Estado</th>
+                            <th>Días Rest.</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaAlumnosBody">
+                        <tr><td colspan="6" class="text-center text-muted">Cargando alumnos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </main>
+
+    <!-- Modal de Pago (Paso 5) -->
+    <div id="modalPago" class="modal">
+        <div class="modal-content card">
+            <span class="close-modal" id="closeModalPago">&times;</span>
+            <h2 class="mb-2 text-accent">Registrar Pago</h2>
+            <p id="pagoAlumnoNombre" class="mb-2" style="font-weight: bold; font-size: 1.1rem;"></p>
+            
+            <form id="formPago">
+                <input type="hidden" id="pagoAlumnoId">
+                <input type="hidden" id="esPrimerPago" value="false">
+                
+                <div id="containerInscripcion" class="form-group" style="display: none; background: rgba(211, 47, 47, 0.1); padding: 1rem; border-radius: 4px; border: 1px solid var(--accent-color); margin-bottom: 1rem;">
+                    <label style="margin: 0; display: flex; align-items: center; gap: 0.5rem; cursor: pointer;">
+                        <input type="checkbox" id="checkInscripcion">
+                        <span><strong>Inscripción ($150 MXN)</strong></span>
+                    </label>
+                    <small class="text-muted mt-1" style="display:block; margin-left: 1.5rem;">Obligatoria para planes mensuales/combos. Opcional para clase/semana.</small>
+                </div>
+
+                <div class="form-group">
+                    <label for="pagoPlan">Seleccionar Plan</label>
+                    <select id="pagoPlan" required>
+                        <option value="" disabled selected>Elige un plan...</option>
+                        <option value="clase" data-precio="50">Clase suelta ($50 MXN)</option>
+                        <option value="semana" data-precio="150">Semana ($150 MXN)</option>
+                        <option value="mensual" data-precio="450">Mensualidad ($450 MXN)</option>
+                        <option value="combo" data-precio="500">Combo Mensual ($500 MXN)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group mt-2 mb-2" style="background-color: var(--bg-color); padding: 1rem; border-radius: 4px; text-align: center;">
+                    <h3 style="margin:0;">Total a cobrar: <span id="pagoTotal" class="text-accent">$0.00 MXN</span></h3>
+                </div>
+                
+                <div id="pagoMsg" style="display:none; font-weight: bold;" class="mb-2"></div>
+                <button type="submit" class="btn" id="btnProcesarPago">Procesar Pago</button>
+            </form>
+        </div>
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabaseClient.js"></script>
     <script src="js/utils.js"></script>

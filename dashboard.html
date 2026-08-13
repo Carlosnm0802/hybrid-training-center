@@ -7,10 +7,16 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Dashboard</h1>
-        <nav>
+    <header class="header">
+        <div class="nav-logo">
+            <img src="assets/img/logo.jpg" alt="HTC Logo">
+        </div>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger">&#9776;</label>
+        <nav class="nav-links">
+            <a href="dashboard.html" style="font-weight: bold; border-bottom: 2px solid var(--accent-color);">Dashboard</a>
             <a href="alumnos.html">Alumnos</a>
+            <a href="alta-alumno.html">Alta de Alumno</a>
             <a href="checkin.html">Check-in</a>
             <a href="#" id="logoutBtn" style="color: var(--accent-color); font-weight: bold;">Cerrar Sesión</a>
         </nav>

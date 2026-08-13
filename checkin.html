@@ -7,16 +7,52 @@
     <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body>
-    <header>
-        <h1>Check-in</h1>
-        <nav>
+    <header class="header">
+        <div class="nav-logo">
+            <img src="assets/img/logo.jpg" alt="HTC Logo">
+        </div>
+        <input type="checkbox" id="menu-toggle" class="menu-toggle">
+        <label for="menu-toggle" class="hamburger">&#9776;</label>
+        <nav class="nav-links">
             <a href="dashboard.html">Dashboard</a>
             <a href="alumnos.html">Alumnos</a>
+            <a href="alta-alumno.html">Alta de Alumno</a>
+            <a href="checkin.html" style="font-weight: bold; border-bottom: 2px solid var(--accent-color);">Check-in</a>
             <a href="#" id="logoutBtn" style="color: var(--accent-color); font-weight: bold;">Cerrar Sesión</a>
         </nav>
     </header>
     <main>
-        <!-- Buscador y botón en paso 7 -->
+        <section class="card mb-4" style="max-width: 600px; margin: 0 auto;">
+            <h2 class="mb-2 text-accent text-center">Control de Acceso</h2>
+            <p class="text-muted text-center mb-4">Escribe el nombre del alumno. El sistema verificará su vigencia automáticamente.</p>
+            
+            <div class="form-group" style="margin-bottom: 2rem;">
+                <input type="text" id="buscadorCheckin" placeholder="🔎 Buscar alumno..." style="padding: 1rem; font-size: 1.2rem; width: 100%; border-radius: 8px; border: 2px solid var(--border-color); background-color: var(--bg-color); color: white;" autocomplete="off">
+            </div>
+            
+            <div id="resultadosCheckin">
+                <!-- Aquí aparecerán las tarjetas con los resultados de búsqueda -->
+            </div>
+        </section>
+
+        <!-- Últimos Check-ins -->
+        <section class="card" style="max-width: 600px; margin: 0 auto;">
+            <h2 class="mb-2 text-accent">Últimos Accesos</h2>
+            <div style="overflow-x: auto;">
+                <table class="data-table" id="tablaCheckins">
+                    <thead>
+                        <tr>
+                            <th style="text-align: left;">Alumno</th>
+                            <th style="text-align: left;">Modalidad</th>
+                            <th style="text-align: left;">Hora de Ingreso</th>
+                        </tr>
+                    </thead>
+                    <tbody id="listaCheckinsBody">
+                        <tr><td colspan="3" class="text-center text-muted">Cargando...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/supabaseClient.js"></script>
