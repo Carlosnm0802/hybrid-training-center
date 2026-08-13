@@ -22,10 +22,69 @@
         </nav>
     </header>
     <main>
-        <p>Bienvenido al sistema.</p>
+        <h2 class="mb-4 text-accent">Panel Principal</h2>
+        
+        <div class="stat-grid" id="dashboardStats">
+            <div class="stat-card">
+                <div class="stat-title">Alumnos</div>
+                <div class="stat-value" id="statActivos">-</div>
+                <div class="stat-subtitle mb-2">Activos con vigencia</div>
+                <div class="stat-row">
+                    <span class="stat-subtitle" style="color:var(--accent-color)">Vencidos: <strong id="statVencidos">-</strong></span>
+                    <span class="stat-subtitle">Sin plan: <strong id="statSinPlan">-</strong></span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">Accesos (Check-ins)</div>
+                <div class="stat-value" id="statCheckinsHoy">-</div>
+                <div class="stat-subtitle mb-2">El día de hoy</div>
+                <div class="stat-row">
+                    <span class="stat-subtitle">Últimos 7 días: <strong id="statCheckinsSemana">-</strong></span>
+                </div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">Ingresos</div>
+                <div class="stat-value" id="statIngresosMes">$0.00</div>
+                <div class="stat-subtitle" id="statMesLabel">Mes actual</div>
+            </div>
+            
+            <div class="stat-card">
+                <div class="stat-title">Distribución de Planes</div>
+                <div class="stat-row" style="border:none; margin:0; padding:0; justify-content: space-between;">
+                    <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                        <span class="stat-subtitle">Boxeo: <strong id="statBoxeo">-</strong></span>
+                        <span class="stat-subtitle">Híbrido: <strong id="statHibrido">-</strong></span>
+                    </div>
+                    <div style="display:flex; flex-direction:column; gap:0.5rem;">
+                        <span class="stat-subtitle">Combo: <strong id="statCombo">-</strong></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="stat-grid" style="margin-top: 2rem;">
+            <div class="stat-card" style="align-items: center;">
+                <div class="stat-title">Estado General</div>
+                <div style="width: 100%; max-width: 250px; margin-top: 1rem;">
+                    <canvas id="chartEstado"></canvas>
+                </div>
+            </div>
+            
+            <div class="stat-card" style="align-items: center;">
+                <div class="stat-title">Modalidades</div>
+                <div style="width: 100%; max-width: 250px; margin-top: 1rem;">
+                    <canvas id="chartModalidad"></canvas>
+                </div>
+            </div>
+        </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="js/supabaseClient.js"></script>
+    <script src="js/utils.js"></script>
     <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
 </body>
 </html>

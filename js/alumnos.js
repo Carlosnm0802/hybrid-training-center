@@ -1,4 +1,6 @@
 let alumnosDataCache = [];
+let currentPage = 1;
+const pageSize = 10;
 
 document.addEventListener('DOMContentLoaded', () => {
     const formAlta = document.getElementById('formAltaAlumno');
@@ -10,9 +12,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const filtroEstado = document.getElementById('filtroEstado');
     const filtroTexto = document.getElementById('filtroTexto');
     
-    if (filtroModalidad) filtroModalidad.addEventListener('change', renderizarTabla);
-    if (filtroEstado) filtroEstado.addEventListener('change', renderizarTabla);
-    if (filtroTexto) filtroTexto.addEventListener('input', renderizarTabla);
+    // Al filtrar, resetear a página 1
+    if (filtroModalidad) filtroModalidad.addEventListener('change', () => { currentPage = 1; renderizarTabla(); });
+    if (filtroEstado) filtroEstado.addEventListener('change', () => { currentPage = 1; renderizarTabla(); });
+    if (filtroTexto) filtroTexto.addEventListener('input', () => { currentPage = 1; renderizarTabla(); });
     
     // Cargar alumnos inicialmente
     cargarAlumnos();
@@ -105,25 +108,48 @@ function renderizarTabla() {
     const estadoSel = document.getElementById('filtroEstado') ? document.getElementById('filtroEstado').value : 'todos';
     const textoSel = document.getElementById('filtroTexto') ? document.getElementById('filtroTexto').value.toLowerCase().trim() : '';
     
-    tbody.innerHTML = '';
-    let count = 0;
-    
-    alumnosDataCache.forEach(alumno => {
+    // 1. Filtrar los datos
+    const filteredData = alumnosDataCache.filter(alumno => {
         const vigencia = calcularDiasRestantes(alumno.fecha_vigencia_hasta);
-        const claseDisp = alumno.clase_disponible ? '<br><small class="text-accent">(+1 clase)</small>' : '';
         
-        // Determinar estado lógico para el filtro
+        // Determinar estado lógico
         let estadoLogico = 'sin-plan';
         if (vigencia.estado === 'Activo' || vigencia.estado === 'Vence hoy') estadoLogico = 'activo';
         if (vigencia.estado === 'Vencido') estadoLogico = 'vencido';
 
-        // Aplicar filtros
-        if (textoSel !== '' && !alumno.nombre_completo.toLowerCase().includes(textoSel)) return;
-        if (modalidadSel !== 'todos' && alumno.modalidad !== modalidadSel) return;
-        if (estadoSel !== 'todos' && estadoLogico !== estadoSel) return;
-
-        count++;
+        // Evaluar condiciones
+        if (textoSel !== '' && !alumno.nombre_completo.toLowerCase().includes(textoSel)) return false;
+        if (modalidadSel !== 'todos' && alumno.modalidad !== modalidadSel) return false;
+        if (estadoSel !== 'todos' && estadoLogico !== estadoSel) return false;
         
+        // Guardar calculos para no repetirlos al pintar
+        alumno._vigencia = vigencia;
+        alumno._estadoLogico = estadoLogico;
+        
+        return true;
+    });
+
+    // 2. Paginar
+    const totalPages = Math.ceil(filteredData.length / pageSize) || 1;
+    if (currentPage > totalPages) currentPage = totalPages;
+    
+    const startIndex = (currentPage - 1) * pageSize;
+    const paginatedData = filteredData.slice(startIndex, startIndex + pageSize);
+
+    // 3. Renderizar tabla
+    tbody.innerHTML = '';
+    
+    if (paginatedData.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No se encontraron alumnos.</td></tr>';
+        renderizarPaginacion(0, 1);
+        return;
+    }
+    
+    paginatedData.forEach(alumno => {
+        const vigencia = alumno._vigencia;
+        const estadoLogico = alumno._estadoLogico;
+        const claseDisp = alumno.clase_disponible ? '<br><small class="text-accent" style="white-space: nowrap;">(+1 clase)</small>' : '';
+
         let badgeClass = 'sin-plan';
         if (estadoLogico === 'activo') badgeClass = 'activo';
         if (estadoLogico === 'vencido') badgeClass = 'vencido';
@@ -142,7 +168,27 @@ function renderizarTabla() {
         tbody.appendChild(tr);
     });
 
-    if (count === 0) {
-        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-muted">No se encontraron alumnos con los filtros seleccionados.</td></tr>';
+    // 4. Renderizar controles de paginación
+    renderizarPaginacion(filteredData.length, totalPages);
+}
+
+function renderizarPaginacion(totalItems, totalPages) {
+    const container = document.getElementById('paginacionContainer');
+    if (!container) return;
+    
+    if (totalItems === 0) {
+        container.innerHTML = '';
+        return;
     }
+
+    container.innerHTML = `
+        <button class="btn-small" style="background-color: var(--border-color); color: var(--text-color); cursor: ${currentPage === 1 ? 'not-allowed' : 'pointer'}; opacity: ${currentPage === 1 ? '0.5' : '1'};" onclick="cambiarPagina(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>Anterior</button>
+        <span style="font-weight: bold; color: var(--text-color); font-size: 0.9rem;">Página ${currentPage} de ${totalPages} <span class="text-muted" style="font-weight: normal; font-size: 0.8rem;">(${totalItems} registros)</span></span>
+        <button class="btn-small" style="background-color: var(--border-color); color: var(--text-color); cursor: ${currentPage === totalPages ? 'not-allowed' : 'pointer'}; opacity: ${currentPage === totalPages ? '0.5' : '1'};" onclick="cambiarPagina(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>Siguiente</button>
+    `;
+}
+
+window.cambiarPagina = function(newPage) {
+    currentPage = newPage;
+    renderizarTabla();
 }

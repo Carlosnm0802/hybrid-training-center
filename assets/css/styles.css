@@ -266,6 +266,51 @@ input:focus, select:focus {
     border-bottom: 1px solid var(--border-color);
 }
 
+/* Dashboard Stats */
+.stat-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.stat-card {
+    background-color: var(--surface-color);
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    border: 1px solid rgba(255,255,255,0.05);
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-title {
+    font-size: 1.1rem;
+    color: var(--text-color);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.stat-value {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: var(--accent-color);
+    margin-bottom: 0.5rem;
+}
+
+.stat-subtitle {
+    font-size: 0.9rem;
+    color: #888;
+}
+
+.stat-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+}
+
 .data-table th {
     background-color: #333;
     color: var(--text-color);
@@ -278,8 +323,11 @@ input:focus, select:focus {
 .badge {
     padding: 0.25rem 0.5rem;
     border-radius: 4px;
+    font-size: 0.85rem;
     font-weight: bold;
-    font-size: 0.8rem;
+    color: white;
+    white-space: nowrap;
+    display: inline-block;
 }
 .badge.activo { background-color: #2e7d32; color: white; }
 .badge.vencido { background-color: #c62828; color: white; }

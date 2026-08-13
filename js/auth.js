@@ -41,9 +41,9 @@ async function checkSession() {
     const isLoginPage = window.location.pathname.endsWith('index.html') || window.location.pathname === '/';
     
     if (session) {
-        // Si hay sesión y estamos en el login, redirigir a alumnos
+        // Si hay sesión y estamos en el login, redirigir a dashboard
         if (isLoginPage) {
-            window.location.href = 'alumnos.html';
+            window.location.href = 'dashboard.html';
         }
     } else {
         // Si no hay sesión y NO estamos en el login, obligar a loguearse
@@ -76,7 +76,7 @@ async function handleLogin(e) {
         if (error) throw error;
         
         // Login exitoso
-        window.location.href = 'alumnos.html';
+        window.location.href = 'dashboard.html';
     } catch (error) {
         console.error('Error en login:', error);
         loginError.textContent = 'Credenciales inválidas. Intenta nuevamente.';
